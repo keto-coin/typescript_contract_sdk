@@ -9,6 +9,10 @@ export namespace Keto {
         public static readonly ERROR: u32 = 4;
         public static readonly FATAL: u32 = 5;
     }
+    /**
+     * 
+     * @param msg 
+     */
     export function console(msg: string): void {
         __console(msg);
     }
@@ -48,11 +52,11 @@ export namespace Keto {
     export function getModelTransactionValue(accountModel: string, transactionValueModel: string): u64 {
         return __getModelTransactionValue(accountModel,transactionValueModel);
     }
-    export function getFeeValue(): u64 {
-        return __getFeeValue();
+    export function getFeeValue(mimimumFee: u64): u64 {
+        return __getFeeValue(mimimumFee);
     }
-    export function getTotalFeeValue(): u64 {
-        return __getTotalFeeValue();
+    export function getTotalFeeValue(mimimumFee: u64): u64 {
+        return __getTotalFeeValue(mimimumFee);
     }
     export function createDebitEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void {
         __createDebitEntry(accountId, name, description, accountModel, transactionModel, value);
@@ -76,7 +80,7 @@ export declare function __getNumberValue(subject: string, predicate: string): nu
 export declare function __getBooleanValue(subject: string, predicate: string): boolean;
 export declare function __getTransactionValue(): u64;
 export declare function __getModelTransactionValue(accountModel: string, transactionValueModel: string): u64;
-export declare function __getFeeValue(): u64;
-export declare function __getTotalFeeValue(): u64;
+export declare function __getFeeValue(mimimumFee: u64): u64;
+export declare function __getTotalFeeValue(mimimumFee: u64): u64;
 export declare function __createDebitEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void;
 export declare function __createCreditEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void;

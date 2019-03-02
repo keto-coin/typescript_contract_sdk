@@ -1,7 +1,33 @@
 // The entry file of your WebAssembly module.
+import {ResultSet} from "./rdf/resultset"
+import {__console,
+    __log,
+    __getFeeAccount,
+    __getAccount,
+    __getRequestStringValue,
+    __setResponseStringValue,
+    __getRequestLongValue,
+    __setResponseLongValue,
+    __getRequestFloatValue,
+    __setResponseFloatValue,
+    __getRequestBooleanValue,
+    __setResponseBooleanValue,
+    __getRequestModelTransactionValue,
+    __getTransactionValue,
+    __getFeeValue,
+    __getTotalFeeValue,
+    __createDebitEntry,
+    __createCreditEntry,
+    __rdf_executeQuery} from "./exports/keto"
+import {c_str_len} from "./exports/utils"
+
+export {ResultSet, ResultRow} from "./rdf/resultset"
 
 // setup name spaceing to make the keto exposed functions easier to use
 export namespace Keto {
+
+    
+
     export class LOG_LEVEL {
         public static readonly DEBUG: u32 = 1;
         public static readonly INFO: u32 = 2;
@@ -9,48 +35,60 @@ export namespace Keto {
         public static readonly ERROR: u32 = 4;
         public static readonly FATAL: u32 = 5;
     }
+
     /**
      * 
      * @param msg 
      */
     export function console(msg: string): void {
-        __console(msg);
+        __console(msg.toUTF8());
     }
     export function log(level: u32, msg: string): void {
-        __log(level,msg);
+        __log(level,msg.toUTF8());
     }
     export function getFeeAccount(): string {
-        return __getFeeAccount();
+        let value : i32 = changetype<i32>(__getFeeAccount());
+        return String.fromUTF8(value, c_str_len(value));
     }
     export function getAccount(): string {
-        return __getAccount();
+        let value = changetype<i32>(__getAccount());
+        return String.fromUTF8(value, c_str_len(value));
     }
-    export function getModelUrl(): string {
-        return __getModelUrl();
+    
+    export function addTripleString(subject: string, predicate: string, value: String): void {
+        __setResponseStringValue(subject.toUTF8(),predicate.toUTF8(),value.toUTF8());
     }
-    export function getNumberOfModels(): number {
-        return __getNumberOfModels();
+    export function getTripleString(subject: string, predicate: string): string {
+        let value = __getRequestStringValue(subject.toUTF8(),predicate.toUTF8());
+        return String.fromUTF8(changetype<usize>(value), value.lengthUTF8());
     }
-    export function getModelNumberUrl(modelNumber: number): string {
-        return __getModelNumberUrl(modelNumber);
+
+    export function addTripleLong(subject: string, predicate: string, value: i64): void {
+        __setResponseLongValue(subject.toUTF8(),predicate.toUTF8(),value);
     }
-    export function addTriple(subject: string, predicate: string, value: string): string {
-        return __addTriple(subject,predicate,value);
+    export function getTripleLong(subject: string, predicate: string): i64 {
+        return __getRequestLongValue(subject.toUTF8(),predicate.toUTF8());
     }
-    export function getStringValue(subject: string, predicate: string): string {
-        return __getStringValue(subject,predicate);
+
+    export function addTripleFloat(subject: string, predicate: string, value: i32): void {
+        __setResponseFloatValue(subject.toUTF8(),predicate.toUTF8(),value);
     }
-    export function getNumberValue(subject: string, predicate: string): number {
-        return __getNumberValue(subject,predicate);
+    export function getTripleFloat(subject: string, predicate: string): i32 {
+        return __getRequestFloatValue(subject.toUTF8(),predicate.toUTF8());
     }
-    export function getBooleanValue(subject: string, predicate: string): boolean {
-        return __getBooleanValue(subject,predicate);
+
+    export function addTripleBoolean(subject: string, predicate: string, value: i32): void {
+        __setResponseBooleanValue(subject.toUTF8(),predicate.toUTF8(),value);
     }
+    export function getTripleBoolean(subject: string, predicate: string): boolean {
+        return __getRequestBooleanValue(subject.toUTF8(),predicate.toUTF8()) == 0;
+    }
+
     export function getTransactionValue(): u64 {
         return __getTransactionValue();
     }
     export function getModelTransactionValue(accountModel: string, transactionValueModel: string): u64 {
-        return __getModelTransactionValue(accountModel,transactionValueModel);
+        return __getRequestModelTransactionValue(accountModel.toUTF8(),transactionValueModel.toUTF8());
     }
     export function getFeeValue(mimimumFee: u64): u64 {
         return __getFeeValue(mimimumFee);
@@ -59,28 +97,14 @@ export namespace Keto {
         return __getTotalFeeValue(mimimumFee);
     }
     export function createDebitEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void {
-        __createDebitEntry(accountId, name, description, accountModel, transactionModel, value);
+        __createDebitEntry(accountId.toUTF8(), name.toUTF8(), description.toUTF8(), accountModel.toUTF8(), transactionModel.toUTF8(), value);
     }
     export function createCreditEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void  {
-        __createCreditEntry(accountId, name, description, accountModel, transactionModel, value);
+        __createCreditEntry(accountId.toUTF8(), name.toUTF8(), description.toUTF8(), accountModel.toUTF8(), transactionModel.toUTF8(), value);
+    }
+
+    export function executeQuery(query: string) : ResultSet {
+        return new ResultSet(__rdf_executeQuery(query.toUTF8()));
     }
 }
 
-
-export declare function __console(msg: string): void;
-export declare function __log(level: u32, msg: string): void;
-export declare function __getFeeAccount(): string;
-export declare function __getAccount(): string;
-export declare function __getModelUrl(): string;
-export declare function __getNumberOfModels(): number;
-export declare function __getModelNumberUrl(modelNumber: number): string;
-export declare function __addTriple(subject: string, predicate: string, value: string): string;
-export declare function __getStringValue(subject: string, predicate: string): string;
-export declare function __getNumberValue(subject: string, predicate: string): number;
-export declare function __getBooleanValue(subject: string, predicate: string): boolean;
-export declare function __getTransactionValue(): u64;
-export declare function __getModelTransactionValue(accountModel: string, transactionValueModel: string): u64;
-export declare function __getFeeValue(mimimumFee: u64): u64;
-export declare function __getTotalFeeValue(mimimumFee: u64): u64;
-export declare function __createDebitEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void;
-export declare function __createCreditEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void;

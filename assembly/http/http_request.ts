@@ -11,7 +11,7 @@ import {
     __http_getParameter,
     __http_getQuery
 } from "../exports/keto"
-import {c_str_len} from "../exports/utils"
+import {c_str_len, c_str_to_typescript} from "../exports/utils"
 
 export class HttpRequest {
     
@@ -22,18 +22,28 @@ export class HttpRequest {
         let roleCount = __http_getNumberOfRoles();
         for (let count = 0; count < roleCount; count++) {
             let value : i32 = changetype<i32>(__http_getRole(count));
-            this.roles.push(String.fromUTF8(changetype<usize>(value), c_str_len(value)));
+            if (value == 0) {
+                continue;
+            }
+            this.roles.push(c_str_to_typescript(value));
         }
 
         let parameterCount = __http_getNumberOfParameters();
         for (let count = 0; count < parameterCount; count++) {
             let value : i32 = changetype<i32>(__http_getParameterKey(count));
-            this.parameterKeys.push(String.fromUTF8(changetype<usize>(value), c_str_len(value)));
+            if (value == 0) {
+                continue;
+            }
+            this.parameterKeys.push(c_str_to_typescript(value));
         }
     }
 
     getAccount() : string {
-        return __getAccount();
+        let value = changetype<i32>(__getAccount());
+        if (value == 0) {
+            return "";
+        }
+        return c_str_to_typescript(value);
     }
 
     getRoles() : String[] {
@@ -51,22 +61,22 @@ export class HttpRequest {
 
     getTarget() : String {
         let value : i32 = changetype<i32>(__http_getTargetUri());
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value))
+        return c_str_to_typescript(value);
     }
 
     getQuery() : String {
         let value : i32 = changetype<i32>(__http_getQuery());
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value))
+        return c_str_to_typescript(value);
     }
 
     getMethod() : String {
         let value : i32 = changetype<i32>(__http_getMethod());
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value))
+        return c_str_to_typescript(value);
     }
 
     getBody() : String {
         let value : i32 = changetype<i32>(__http_getBody());
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value))
+        return c_str_to_typescript(value);
     }
 
     getParameterKeys() : String[] {
@@ -75,7 +85,7 @@ export class HttpRequest {
 
     getParameter(key: String) : String {
         let value : i32 = changetype<i32>(__http_getParameter(key.toUTF8()));
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value))
+        return c_str_to_typescript(value)
     }
 
 }

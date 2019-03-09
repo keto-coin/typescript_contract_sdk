@@ -8,3 +8,15 @@ export function c_str_len(value: i32) : usize {
 
     return pos;
 }
+
+
+
+export function c_str_to_typescript(value: i32) : string {
+    let len = c_str_len(value);
+    if (len == 0) {
+        return "";
+    }
+    return String.fromUTF8(value,len);
+}
+
+

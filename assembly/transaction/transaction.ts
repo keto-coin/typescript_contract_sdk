@@ -18,7 +18,7 @@ import {__console,
     __createDebitEntry,
     __createCreditEntry,
     __rdf_executeQuery} from "../exports/keto"
-import {c_str_len} from "../exports/utils"
+import {c_str_len, c_str_to_typescript} from "../exports/utils"
 
 
 export class Transaction {
@@ -29,17 +29,17 @@ export class Transaction {
 
     getFeeAccount(): string {
         let value : i32 = changetype<i32>(__getFeeAccount());
-        return String.fromUTF8(value, c_str_len(value));
+        return c_str_to_typescript(value);
     }
     
     getAccount(): string {
         let value = changetype<i32>(__getAccount());
-        return String.fromUTF8(value, c_str_len(value));
+        return c_str_to_typescript(value);
     }
 
     getTransaction(): string {
         let value = changetype<i32>(__getTransaction());
-        return String.fromUTF8(value, c_str_len(value));
+        return c_str_to_typescript(value);
     }
     
     addTripleString(subject: string, predicate: string, value: String): void {
@@ -47,8 +47,8 @@ export class Transaction {
     }
     
     getTripleString(subject: string, predicate: string): string {
-        let value = __getRequestStringValue(subject.toUTF8(),predicate.toUTF8());
-        return String.fromUTF8(changetype<usize>(value), value.lengthUTF8());
+        let value = changetype<i32>(__getRequestStringValue(subject.toUTF8(),predicate.toUTF8()));
+        return c_str_to_typescript(value);
     }
 
     addTripleLong(subject: string, predicate: string, value: i64): void {

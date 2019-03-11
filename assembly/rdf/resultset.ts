@@ -11,7 +11,7 @@ import {__console,
     __rdf_getQueryHeader,
     __rdf_getQueryHeaderCount,
     __rdf_getRowCount} from "../exports/keto"
-import {c_str_len} from "../exports/utils"
+import {c_str_len,c_str_to_typescript} from "../exports/utils"
 
 export class Error {
     msg: string;
@@ -32,12 +32,12 @@ export class ResultRow {
 
     getQueryString(id: i64) : string {
         let value : i32 = changetype<i32>(__rdf_getQueryString(this.resultSet.index,this.index,id));
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value));
+        return c_str_to_typescript(value);
     }
 
     getQueryStringByKey(key: string) : string {
         let value : i32 = changetype<i32>(__rdf_getQueryStringByKey(this.resultSet.index,this.index,key.toUTF8()));
-        return String.fromUTF8(changetype<usize>(value), c_str_len(value));
+        return c_str_to_typescript(value);
     }
 
     getQueryLong(id: i64) : i64 {
@@ -66,10 +66,12 @@ export class ResultSet {
 
     constructor(index: i64) {
         this.index = index;
+        this.currentRow = -1;
+        
         this.headerCount = __rdf_getQueryHeaderCount(index);
         for (let count = 0; count < this.headerCount; count++) {
             let value : i32 = changetype<i32>(__rdf_getQueryHeader(index,count));
-            this.headers.push(String.fromUTF8(changetype<usize>(value), c_str_len(value)));
+            this.headers.push(c_str_to_typescript(value));
         }
         this.rowCount = __rdf_getRowCount(index);
     }

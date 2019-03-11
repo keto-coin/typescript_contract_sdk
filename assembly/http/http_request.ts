@@ -15,8 +15,8 @@ import {c_str_len, c_str_to_typescript} from "../exports/utils"
 
 export class HttpRequest {
     
-    roles: String[] = [];
-    parameterKeys: String[] = [];
+    roles: string[] = [];
+    parameterKeys: string[] = [];
 
     constructor() {
         let roleCount = __http_getNumberOfRoles();
@@ -46,7 +46,7 @@ export class HttpRequest {
         return c_str_to_typescript(value);
     }
 
-    getRoles() : String[] {
+    getRoles() : string[] {
         return this.roles;
     }
 
@@ -59,31 +59,31 @@ export class HttpRequest {
         return false;
     }
 
-    getTarget() : String {
+    getTarget() : string {
         let value : i32 = changetype<i32>(__http_getTargetUri());
         return c_str_to_typescript(value);
     }
 
-    getQuery() : String {
+    getQuery() : string {
         let value : i32 = changetype<i32>(__http_getQuery());
         return c_str_to_typescript(value);
     }
 
-    getMethod() : String {
+    getMethod() : string {
         let value : i32 = changetype<i32>(__http_getMethod());
         return c_str_to_typescript(value);
     }
 
-    getBody() : String {
+    getBody() : string {
         let value : i32 = changetype<i32>(__http_getBody());
         return c_str_to_typescript(value);
     }
 
-    getParameterKeys() : String[] {
+    getParameterKeys() : string[] {
         return this.parameterKeys;
     }
 
-    getParameter(key: String) : String {
+    getParameter(key: string) : string {
         let value : i32 = changetype<i32>(__http_getParameter(key.toUTF8()));
         return c_str_to_typescript(value)
     }

@@ -55,11 +55,7 @@ export class TsJSONBuilder {
  
     toJson() : string {
         let result : string = "{";
-        let sep : string = ""
-        for(let count = 0; count < this.values.length; count++) {
-            result += sep + this.values[count].generateJson()
-            sep = ","
-        }
+        result += this.processValues(this.values);
         result += "}"
         return result;
     }   
@@ -73,31 +69,19 @@ export class TsJSONBuilder {
             result = this.wrappString(this.key) + ":" + this.wrappString(this.value)
         } else if (this.type == TsJsonType.ARRAY && this.key.length != 0 && this.values.length !=0) {
             result = this.wrappString(this.key) + ":["
-            for(let count = 0; count < this.values.length; count++) {
-                result += sep + this.values[count].generateJson()
-                sep = ","
-            }
+            result += this.processValues(this.values);
             result += "]"
         } else if (this.type == TsJsonType.ARRAY && this.key.length == 0 && this.values.length !=0) {
             result = "["
-            for(let count = 0; count < this.values.length; count++) {
-                result += sep + this.values[count].generateJson()
-                sep = ","
-            }
+            result += this.processValues(this.values);
             result += "]"
         } else if (this.key.length == 0 && this.values.length !=0) {
             result = "{"
-            for(let count = 0; count < this.values.length; count++) {
-                result += sep + this.values[count].generateJson()
-                sep = ","
-            }
+            result += this.processValues(this.values);
             result += "}"
         } else if (this.key.length != 0 && this.values.length !=0) {
             result = this.wrappString(this.key) + ":{"
-            for(let count = 0; count < this.values.length; count++) {
-                result += sep + this.values[count].generateJson()
-                sep = ","
-            }
+            result += this.processValues(this.values);
             result += "}"
         }
         return result;
@@ -105,5 +89,18 @@ export class TsJSONBuilder {
 
     private wrappString(value: string) : string {
         return "\"" + value + "\"";
+    }
+
+    private processValues(values: Array<TsJSONBuilder>) : string {
+        let result : string = "";
+        let sep: string = ""
+        for(let count = 0; count < this.values.length; count++) {
+            let json : string = this.values[count].generateJson();
+            if (json != null && (json.length != 0)) {
+                result += sep + json
+                sep = ","
+            }
+        }
+        return result;
     }
 }

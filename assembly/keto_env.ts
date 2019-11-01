@@ -1,4 +1,4 @@
-import "allocator/arena";
+//import "allocator/arena";
 
 export namespace keto {
     export function abort( message: string, fileName: string, lineNumber: u32, columnNumber: u32): void

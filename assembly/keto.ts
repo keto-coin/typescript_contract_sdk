@@ -22,7 +22,7 @@ import {__console,
     __createDebitEntry,
     __createCreditEntry,
     __rdf_executeQuery} from "./exports/keto"
-import {c_str_len} from "./exports/utils"
+import {c_str_len, typescript_to_c} from "./exports/utils"
 
 export {ResultSet, ResultRow} from "./rdf/resultset"
 export {Transaction} from "./transaction/transaction"
@@ -50,10 +50,10 @@ export namespace Keto {
      * @param msg 
      */
     export function console(msg: string): void {
-        __console(msg.toUTF8());
+        __console(typescript_to_c(msg));
     }
     export function log(level: u32, msg: string): void {
-        __log(level,msg.toUTF8());
+        __log(level,typescript_to_c(msg));
     }
     
     export function transaction() : Transaction {
@@ -69,7 +69,7 @@ export namespace Keto {
     }
 
     export function executeQuery(query: string, type: string = QUERY_TYPES.SESSION) : ResultSet {
-        return new ResultSet(__rdf_executeQuery(type.toUTF8(),query.toUTF8()));
+        return new ResultSet(__rdf_executeQuery(typescript_to_c(type),typescript_to_c(query)));
     }
 }
 

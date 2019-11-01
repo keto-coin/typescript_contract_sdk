@@ -16,7 +16,9 @@ export function c_str_to_typescript(value: i32) : string {
     if (len == 0) {
         return "";
     }
-    return String.fromUTF8(value,len);
+    return String.UTF8.decode(changetype<ArrayBuffer>(value),true);
 }
 
-
+export function typescript_to_c(value: string) : i32 {
+    return changetype<usize>(String.UTF8.encode(value,true))
+}

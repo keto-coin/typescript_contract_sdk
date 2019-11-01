@@ -93,8 +93,8 @@ export class JSONDecoder<JSONHandlerT extends JSONHandler> {
 
     deserializeString(value: String): void {
         let result = value.toString();
-        let utf8ptr = result.toUTF8();
-        let buffer = new Uint8Array(result.lengthUTF8);
+        let utf8ptr = changetype<usize>(String.UTF8.encode(result,true));
+        let buffer = new Uint8Array(result.length);
         for (let i = 0; i <  buffer.length; i++) {
             buffer[i] = load<u8>(utf8ptr + i);
         }

@@ -11,7 +11,7 @@ import {__console,
     __rdf_getQueryHeader,
     __rdf_getQueryHeaderCount,
     __rdf_getRowCount} from "../exports/keto"
-import {c_str_len,c_str_to_typescript} from "../exports/utils"
+import {c_str_len,c_str_to_typescript,typescript_to_c} from "../exports/utils"
 
 export class Error {
     msg: string;
@@ -36,7 +36,7 @@ export class ResultRow {
     }
 
     getQueryStringByKey(key: string) : string {
-        let value : i32 = changetype<i32>(__rdf_getQueryStringByKey(this.resultSet.index,this.index,key.toUTF8()));
+        let value : i32 = changetype<i32>(__rdf_getQueryStringByKey(this.resultSet.index,this.index,typescript_to_c(key)));
         return c_str_to_typescript(value);
     }
 
@@ -45,7 +45,7 @@ export class ResultRow {
     }
 
     getQueryLongByKey(key: string) : i64 {
-        return __rdf_getQueryLongByKey(this.resultSet.index,this.index,key.toUTF8());
+        return __rdf_getQueryLongByKey(this.resultSet.index,this.index,typescript_to_c(key));
     }
     
     getQueryFloat(id: i64) : i32 {
@@ -53,7 +53,7 @@ export class ResultRow {
     }
 
     getQueryFloatByKey(key: string) : i32 {
-        return __rdf_getQueryFloatByKey(this.resultSet.index,this.index,key.toUTF8());
+        return __rdf_getQueryFloatByKey(this.resultSet.index,this.index,typescript_to_c(key));
     }
 }
 
@@ -91,7 +91,7 @@ export class ResultSet {
         return new ResultRow(this,index);
     }
 
-    nextRow() : ResultRow {
+    nextRow() : ResultRow | null {
         if (this.currentRow == -1) {
             this.currentRow = 0;
         } else {
@@ -104,6 +104,6 @@ export class ResultSet {
     }
 
     resetRow() : void {
-        this.currentRow = null;
+        this.currentRow = -1;
     }
 }

@@ -11,7 +11,7 @@ import {
     __http_getParameter,
     __http_getQuery
 } from "../exports/keto"
-import {c_str_len, c_str_to_typescript} from "../exports/utils"
+import {c_str_len, c_str_to_typescript, typescript_to_c} from "../exports/utils"
 
 export class HttpRequest {
     
@@ -84,7 +84,7 @@ export class HttpRequest {
     }
 
     getParameter(key: string) : string {
-        let value : i32 = changetype<i32>(__http_getParameter(key.toUTF8()));
+        let value : i32 = changetype<i32>(__http_getParameter(typescript_to_c(key)));
         return c_str_to_typescript(value)
     }
 

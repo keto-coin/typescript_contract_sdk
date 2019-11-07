@@ -1,4 +1,4 @@
-
+import {__alloc,__free} from "~lib/rt/tlsf";
 
 export function c_str_len(value: i32) : usize {
     let pos : usize = 0;
@@ -9,16 +9,8 @@ export function c_str_len(value: i32) : usize {
     return pos;
 }
 
-
-
-export function c_str_to_typescript(value: i32) : string {
-    let len = c_str_len(value);
-    if (len == 0) {
-        return "";
-    }
-    return String.UTF8.decode(changetype<ArrayBuffer>(value),true);
-}
-
-export function typescript_to_c(value: string) : i32 {
-    return changetype<usize>(String.UTF8.encode(value,true))
+export function c_str_to_typescript(value: usize) : string {
+    let result : string =  String.UTF8.decode(changetype<ArrayBuffer>(value),true);
+    //__release(value)
+    return result;
 }

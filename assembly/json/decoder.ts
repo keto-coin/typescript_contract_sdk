@@ -214,13 +214,13 @@ export class JSONDecoder<JSONHandlerT extends JSONHandler> {
             assert(byte >= 0x20, "Unexpected control character");
             if (byte == '"'.charCodeAt(0)) {
                 stringParts.push(
-                    String.fromUTF8(this.state.buffer.buffer.data + savedIndex, this.state.readIndex - savedIndex - 1));
+                    String.UTF8.decode(this.state.buffer.buffer.data + savedIndex, this.state.readIndex - savedIndex - 1));
                 return stringParts.join("");
             }
             if (byte == "\\".charCodeAt(0)) {
                 if (this.state.readIndex > savedIndex + 1) {
                     stringParts.push(
-                        String.fromUTF8(this.state.buffer.buffer.data + savedIndex, this.state.readIndex - savedIndex - 1));
+                        String.UTF8.decode(this.state.buffer.buffer.data + savedIndex, this.state.readIndex - savedIndex - 1));
                 }
                 stringParts.push(this.readEscapedChar());
                 savedIndex = this.state.readIndex;

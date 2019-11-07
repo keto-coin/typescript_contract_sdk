@@ -11,7 +11,7 @@ import {
     __http_getParameter,
     __http_getQuery
 } from "../exports/keto"
-import {c_str_len, c_str_to_typescript, typescript_to_c} from "../exports/utils"
+import {c_str_len, c_str_to_typescript} from "../exports/utils"
 
 export class HttpRequest {
     
@@ -21,7 +21,7 @@ export class HttpRequest {
     constructor() {
         let roleCount = __http_getNumberOfRoles();
         for (let count = 0; count < roleCount; count++) {
-            let value : i32 = changetype<i32>(__http_getRole(count));
+            let value : i32 = __http_getRole(count);
             if (value == 0) {
                 continue;
             }
@@ -30,7 +30,7 @@ export class HttpRequest {
 
         let parameterCount = __http_getNumberOfParameters();
         for (let count = 0; count < parameterCount; count++) {
-            let value : i32 = changetype<i32>(__http_getParameterKey(count));
+            let value : i32 = __http_getParameterKey(count);
             if (value == 0) {
                 continue;
             }
@@ -39,7 +39,7 @@ export class HttpRequest {
     }
 
     getAccount() : string {
-        let value = changetype<i32>(__getAccount());
+        let value = __getAccount();
         if (value == 0) {
             return "";
         }
@@ -60,22 +60,22 @@ export class HttpRequest {
     }
 
     getTarget() : string {
-        let value : i32 = changetype<i32>(__http_getTargetUri());
+        let value : i32 = __http_getTargetUri();
         return c_str_to_typescript(value);
     }
 
     getQuery() : string {
-        let value : i32 = changetype<i32>(__http_getQuery());
+        let value : i32 = __http_getQuery();
         return c_str_to_typescript(value);
     }
 
     getMethod() : string {
-        let value : i32 = changetype<i32>(__http_getMethod());
+        let value : i32 = __http_getMethod();
         return c_str_to_typescript(value);
     }
 
     getBody() : string {
-        let value : i32 = changetype<i32>(__http_getBody());
+        let value : i32 = __http_getBody();
         return c_str_to_typescript(value);
     }
 
@@ -84,7 +84,8 @@ export class HttpRequest {
     }
 
     getParameter(key: string) : string {
-        let value : i32 = changetype<i32>(__http_getParameter(typescript_to_c(key)));
+        let utf8Key = String.UTF8.encode(key,true);
+        let value : i32 = __http_getParameter(changetype<usize>(utf8Key));
         return c_str_to_typescript(value)
     }
 

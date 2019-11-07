@@ -11,7 +11,8 @@ import {__console,
     __rdf_getQueryHeader,
     __rdf_getQueryHeaderCount,
     __rdf_getRowCount} from "../exports/keto"
-import {c_str_len,c_str_to_typescript,typescript_to_c} from "../exports/utils"
+import {Keto} from "../keto"
+import {c_str_len,c_str_to_typescript} from "../exports/utils"
 
 export class Error {
     msg: string;
@@ -31,12 +32,13 @@ export class ResultRow {
     }
 
     getQueryString(id: i64) : string {
-        let value : i32 = changetype<i32>(__rdf_getQueryString(this.resultSet.index,this.index,id));
+        let value : i32 = __rdf_getQueryString(this.resultSet.index,this.index,id);
         return c_str_to_typescript(value);
     }
 
     getQueryStringByKey(key: string) : string {
-        let value : i32 = changetype<i32>(__rdf_getQueryStringByKey(this.resultSet.index,this.index,typescript_to_c(key)));
+        let utf8Key = String.UTF8.encode(key,true);
+        let value : i32 = __rdf_getQueryStringByKey(this.resultSet.index,this.index,changetype<usize>(utf8Key));
         return c_str_to_typescript(value);
     }
 
@@ -45,7 +47,8 @@ export class ResultRow {
     }
 
     getQueryLongByKey(key: string) : i64 {
-        return __rdf_getQueryLongByKey(this.resultSet.index,this.index,typescript_to_c(key));
+        let utf8Key = String.UTF8.encode(key,true);
+        return __rdf_getQueryLongByKey(this.resultSet.index,this.index,changetype<usize>(utf8Key));
     }
     
     getQueryFloat(id: i64) : i32 {
@@ -53,7 +56,8 @@ export class ResultRow {
     }
 
     getQueryFloatByKey(key: string) : i32 {
-        return __rdf_getQueryFloatByKey(this.resultSet.index,this.index,typescript_to_c(key));
+        let utf8Key = String.UTF8.encode(key,true);
+        return __rdf_getQueryFloatByKey(this.resultSet.index,this.index,changetype<usize>(utf8Key));
     }
 }
 
@@ -70,7 +74,7 @@ export class ResultSet {
         
         this.headerCount = __rdf_getQueryHeaderCount(index);
         for (let count = 0; count < this.headerCount; count++) {
-            let value : i32 = changetype<i32>(__rdf_getQueryHeader(index,count));
+            let value : i32 = __rdf_getQueryHeader(index,count);
             this.headers.push(c_str_to_typescript(value));
         }
         this.rowCount = __rdf_getRowCount(index);
@@ -92,6 +96,7 @@ export class ResultSet {
     }
 
     nextRow() : ResultRow | null {
+        Keto.log(Keto.LOG_LEVEL.ERROR,"The next row")
         if (this.currentRow == -1) {
             this.currentRow = 0;
         } else {
@@ -100,6 +105,7 @@ export class ResultSet {
         if (this.currentRow >= this.rowCount) {
             return null;
         }
+        Keto.log(Keto.LOG_LEVEL.ERROR,"Return the result row")
         return new ResultRow(this,this.currentRow);
     }
 

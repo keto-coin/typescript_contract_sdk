@@ -22,8 +22,9 @@ import {__console,
     __createDebitEntry,
     __createCreditEntry,
     __rdf_executeQuery} from "./exports/keto"
-import {c_str_len, typescript_to_c} from "./exports/utils"
-
+import {c_str_len} from "./exports/utils"
+ 
+export {_malloc, _free} from "./memory/keto"
 export {ResultSet, ResultRow} from "./rdf/resultset"
 export {Transaction} from "./transaction/transaction"
 export {HttpRequest} from "./http/http_request"
@@ -50,10 +51,12 @@ export namespace Keto {
      * @param msg 
      */
     export function console(msg: string): void {
-        __console(typescript_to_c(msg));
+        let utf8Msg = String.UTF8.encode(msg,true);
+        __console(changetype<usize>(utf8Msg));
     }
     export function log(level: u32, msg: string): void {
-        __log(level,typescript_to_c(msg));
+        let utf8Msg = String.UTF8.encode(msg,true);
+        __log(level,changetype<usize>(utf8Msg));
     }
     
     export function transaction() : Transaction {
@@ -69,7 +72,9 @@ export namespace Keto {
     }
 
     export function executeQuery(query: string, type: string = QUERY_TYPES.SESSION) : ResultSet {
-        return new ResultSet(__rdf_executeQuery(typescript_to_c(type),typescript_to_c(query)));
+        let utf8Query = String.UTF8.encode(query,true);
+        let utf8Type = String.UTF8.encode(type,true);
+        return new ResultSet(__rdf_executeQuery(changetype<usize>(utf8Type),changetype<usize>(utf8Query)));
     }
 }
 

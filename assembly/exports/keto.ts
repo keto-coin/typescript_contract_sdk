@@ -24,6 +24,32 @@ export declare function __getTotalFeeValue(mimimumFee: u64): u64;
 export declare function __createDebitEntry(accountId: usize, name: usize, description: usize, accountModel: usize, transactionModel: usize, value: u64): void;
 export declare function __createCreditEntry(accountId: usize, name: usize, description: usize, accountModel: usize, transactionModel: usize, value: u64): void;
 
+// child transaction methods
+export declare function __transaction_createTransaction(): i32;
+export declare function __transaction_getTransactionSignator(transactionId: i32): usize;
+export declare function __transaction_getCreatorId(transactionId: i32): usize;
+export declare function __transaction_getSourceAccount(transactionId: i32): usize;
+export declare function __transaction_setSourceAccount(transactionId: i32, accountHash: usize): void;
+export declare function __transaction_getTargetAccount(transactionId: i32): usize;
+export declare function __transaction_setTargetAccount(transactionId: i32, accountHash: usize): void;
+export declare function __transaction_getParent(transactionId: i32): usize;
+export declare function __transaction_getTransactionValue(transactionId: i32): i64;
+export declare function __transaction_setTransactionValue(transactionId: i32, value: i64): void;
+export declare function __transaction_createTransactionAction(transactionId: i32, model: usize): i32;
+export declare function __transaction_getActionContractName(transactionId: i32, actionId: i32): usize;
+export declare function __transaction_setActionContractName(transactionId: i32, actionId: i32, name: usize): void;
+export declare function __transaction_getActionContract(transactionId: i32, actionId: i32): usize;
+export declare function __transaction_setActionContract(transactionId: i32, actionId: i32, name: usize): void;
+export declare function __transaction_getRequestStringValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize): usize;
+export declare function __transaction_setRequestStringValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize, value: usize): void;
+export declare function __transaction_getRequestLongValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize): i64;
+export declare function __transaction_setRequestLongValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize, value: i64): void;
+export declare function __transaction_getRequestFloatValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize): i32;
+export declare function __transaction_setRequestFloatValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize, value: i32): void;
+export declare function __transaction_getRequestBooleanValue(transactionId: i32, actionId: i32, subject: i32, predicate: usize): i32;
+export declare function __transaction_setRequestBooleanValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize, value: i32): void;
+export declare function __transaction_submit(transactionId: i32): void;
+
 // rdf methods
 export declare function __rdf_executeQuery(type: usize, query: usize) : i64;
 export declare function __rdf_getQueryHeaderCount(id: i64) : i64;

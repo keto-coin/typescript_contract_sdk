@@ -19,6 +19,7 @@ import {__console,
     __createCreditEntry,
     __rdf_executeQuery} from "../exports/keto"
 import {c_str_len, c_str_to_typescript} from "../exports/utils"
+import {ChildTransaction} from "./ChildTransaction"
 
 
 export class Transaction {
@@ -122,6 +123,10 @@ export class Transaction {
         let utf8TransactionModel = String.UTF8.encode(transactionModel,true);
         __createCreditEntry(changetype<usize>(utf8AccountId), changetype<usize>(utf8Name), changetype<usize>(utf8Description), 
         changetype<usize>(utf8AccountModel), changetype<usize>(utf8TransactionModel), value);
+    }
+
+    createChildTransaction() : ChildTransaction {
+        return new ChildTransaction();
     }
 }
 

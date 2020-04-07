@@ -96,7 +96,6 @@ export class ResultSet {
     }
 
     nextRow() : ResultRow | null {
-        Keto.log(Keto.LOG_LEVEL.ERROR,"The next row")
         if (this.currentRow == -1) {
             this.currentRow = 0;
         } else {
@@ -105,7 +104,6 @@ export class ResultSet {
         if (this.currentRow >= this.rowCount) {
             return null;
         }
-        Keto.log(Keto.LOG_LEVEL.ERROR,"Return the result row")
         return new ResultRow(this,this.currentRow);
     }
 

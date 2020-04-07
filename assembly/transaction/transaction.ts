@@ -2,6 +2,8 @@ import {__console,
     __log,
     __getFeeAccount,
     __getAccount,
+    __getDebitAccount,
+    __getCreditAccount,
     __getTransaction,
     __getRequestStringValue,
     __setResponseStringValue,
@@ -35,6 +37,16 @@ export class Transaction {
     
     getAccount(): string {
         let value = __getAccount();
+        return c_str_to_typescript(value);
+    }
+
+    getDebitAccount(): string {
+        let value = __getDebitAccount();
+        return c_str_to_typescript(value);
+    }
+
+    getCreditAccount(): string {
+        let value = __getCreditAccount();
         return c_str_to_typescript(value);
     }
 
@@ -100,29 +112,29 @@ export class Transaction {
         let utf8TransactionValueModel = String.UTF8.encode(transactionValueModel,true);
         return __getRequestModelTransactionValue(changetype<usize>(utf8AccountModel),changetype<usize>(utf8TransactionValueModel));
     }
-    getFeeValue(mimimumFee: u64): u64 {
+    getFeeValue(mimimumFee: i64): i64 {
         return __getFeeValue(mimimumFee);
     }
-    getTotalFeeValue(mimimumFee: u64): u64 {
+    getTotalFeeValue(mimimumFee: i64): i64 {
         return __getTotalFeeValue(mimimumFee);
     }
-    createDebitEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void {
+    createDebitEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: i64): bool {
         let utf8AccountId = String.UTF8.encode(accountId,true);
         let utf8Name = String.UTF8.encode(name,true);
         let utf8Description = String.UTF8.encode(description,true);
         let utf8AccountModel = String.UTF8.encode(accountModel,true);
         let utf8TransactionModel = String.UTF8.encode(transactionModel,true);
-        __createDebitEntry(changetype<usize>(utf8AccountId), changetype<usize>(utf8Name), changetype<usize>(utf8Description), 
-        changetype<usize>(utf8AccountModel), changetype<usize>(utf8TransactionModel), value);
+        return (__createDebitEntry(changetype<usize>(utf8AccountId), changetype<usize>(utf8Name), changetype<usize>(utf8Description), 
+            changetype<usize>(utf8AccountModel), changetype<usize>(utf8TransactionModel), value) ? true : false);
     }
-    createCreditEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: u64): void  {
+    createCreditEntry(accountId: string, name: string, description: string, accountModel: string, transactionModel: string, value: i64): bool  {
         let utf8AccountId = String.UTF8.encode(accountId,true);
         let utf8Name = String.UTF8.encode(name,true);
         let utf8Description = String.UTF8.encode(description,true);
         let utf8AccountModel = String.UTF8.encode(accountModel,true);
         let utf8TransactionModel = String.UTF8.encode(transactionModel,true);
-        __createCreditEntry(changetype<usize>(utf8AccountId), changetype<usize>(utf8Name), changetype<usize>(utf8Description), 
-        changetype<usize>(utf8AccountModel), changetype<usize>(utf8TransactionModel), value);
+        return (__createCreditEntry(changetype<usize>(utf8AccountId), changetype<usize>(utf8Name), changetype<usize>(utf8Description), 
+            changetype<usize>(utf8AccountModel), changetype<usize>(utf8TransactionModel), value) ? true : false);
     }
 
     createChildTransaction() : ChildTransaction {

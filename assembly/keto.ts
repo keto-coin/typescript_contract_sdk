@@ -1,6 +1,7 @@
 // The entry file of your WebAssembly module.
 import {ResultSet} from "./rdf/resultset"
 import {Transaction} from "./transaction/transaction"
+import {Contract} from "./contract/Contract"
 import {HttpRequest} from "./http/http_request"
 import {HttpResponse} from "./http/http_response"
 import {__console,
@@ -27,6 +28,7 @@ import {c_str_len} from "./exports/utils"
 export {_malloc, _free} from "./memory/keto"
 export {ResultSet, ResultRow} from "./rdf/resultset"
 export {Transaction} from "./transaction/transaction"
+export {Contract} from "./contract/Contract"
 export {HttpRequest} from "./http/http_request"
 export {HttpResponse} from "./http/http_response"
 
@@ -59,6 +61,10 @@ export namespace Keto {
         __log(level,changetype<usize>(utf8Msg));
     }
     
+    export function contract() : Contract {
+        return new Contract();
+    }
+
     export function transaction() : Transaction {
         return new Transaction();
     }

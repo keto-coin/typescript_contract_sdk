@@ -94,7 +94,7 @@ export class TransactionAction {
         return __transaction_getRequestLongValue(this.transactionId, this.actionId, changetype<usize>(utf8Subject),changetype<usize>(utf8Predicate));
     }
 
-    setModelLongValue(subject: string, predicate: string, value: number) : void {
+    setModelLongValue(subject: string, predicate: string, value: i64) : void {
         let utf8Subject = String.UTF8.encode(subject,true);
         let utf8Predicate = String.UTF8.encode(predicate,true);
         __transaction_setRequestLongValue(this.transactionId, this.actionId, changetype<usize>(utf8Subject),changetype<usize>(utf8Predicate), value)
@@ -121,6 +121,6 @@ export class TransactionAction {
     setModelBooleanValue(subject: string, predicate: string, value: bool) : void {
         let utf8Subject = String.UTF8.encode(subject,true);
         let utf8Predicate = String.UTF8.encode(predicate,true);
-        __transaction_setRequestBooleanValue(this.transactionId, this.actionId, changetype<usize>(utf8Subject),changetype<usize>(utf8Predicate), value)
+        __transaction_setRequestBooleanValue(this.transactionId, this.actionId, changetype<usize>(utf8Subject),changetype<usize>(utf8Predicate), (value ? 1 : 0));
     }
 }

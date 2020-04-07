@@ -2,8 +2,18 @@
 
 export declare function __console(msg: usize): void;
 export declare function __log(level: u32, msg: usize): void;
+
+// contract information
+export declare function __getContractName(): usize;
+export declare function __getContractHash(): usize;
+export declare function __getContractOwner(): usize;
+
+
+// transaction information
 export declare function __getFeeAccount(): usize;
 export declare function __getAccount(): usize;
+export declare function __getDebitAccount(): usize;
+export declare function __getCreditAccount(): usize;
 export declare function __getTransaction(): usize;
 
 // exported tripple methods
@@ -17,12 +27,12 @@ export declare function __getRequestBooleanValue(subject: i32, predicate: usize)
 export declare function __setResponseBooleanValue(subject: usize, predicate: usize, value: i32): void;
 
 // transaction methods
-export declare function __getTransactionValue(): u64;
-export declare function __getRequestModelTransactionValue(accountModel: usize, transactionValueModel: i32): u64;
-export declare function __getFeeValue(mimimumFee: u64): u64;
-export declare function __getTotalFeeValue(mimimumFee: u64): u64;
-export declare function __createDebitEntry(accountId: usize, name: usize, description: usize, accountModel: usize, transactionModel: usize, value: u64): void;
-export declare function __createCreditEntry(accountId: usize, name: usize, description: usize, accountModel: usize, transactionModel: usize, value: u64): void;
+export declare function __getTransactionValue(): i64;
+export declare function __getRequestModelTransactionValue(accountModel: usize, transactionValueModel: i32): i64;
+export declare function __getFeeValue(mimimumFee: i64): i64;
+export declare function __getTotalFeeValue(mimimumFee: i64): i64;
+export declare function __createDebitEntry(accountId: usize, name: usize, description: usize, accountModel: usize, transactionModel: usize, value: i64): i32;
+export declare function __createCreditEntry(accountId: usize, name: usize, description: usize, accountModel: usize, transactionModel: usize, value: i64): i32;
 
 // child transaction methods
 export declare function __transaction_createTransaction(): i32;
@@ -49,6 +59,37 @@ export declare function __transaction_setRequestFloatValue(transactionId: i32, a
 export declare function __transaction_getRequestBooleanValue(transactionId: i32, actionId: i32, subject: i32, predicate: usize): i32;
 export declare function __transaction_setRequestBooleanValue(transactionId: i32, actionId: i32, subject: usize, predicate: usize, value: i32): void;
 export declare function __transaction_submit(transactionId: i32): void;
+export declare function __transaction_submitWithStatus(transactionId: i32, status: usize): void;
+export declare function __transaction_createNestedTransaction(transactionId: i32, encrypted: i32): usize;
+export declare function __transaction_createNestedTransactionFromParent(transactionId: i32, encrypted: i32, parentHash: usize): usize;
+
+// child nested transactions
+export declare function __transaction_nested_getTransactionSignator(transactionId: i32, nestedTransactions: usize): usize;
+export declare function __transaction_nested_getCreatorId(transactionId: i32, nestedTransactions: usize): usize;
+export declare function __transaction_nested_getSourceAccount(transactionId: i32, nestedTransactions: usize): usize;
+export declare function __transaction_nested_setSourceAccount(transactionId: i32, nestedTransactions: usize, accountHash: usize): void;
+export declare function __transaction_nested_getTargetAccount(transactionId: i32, nestedTransactions: usize): usize;
+export declare function __transaction_nested_setTargetAccount(transactionId: i32, nestedTransactions: usize, accountHash: usize): void;
+export declare function __transaction_nested_getParent(transactionId: i32, nestedTransactions: usize): usize;
+export declare function __transaction_nested_getTransactionValue(transactionId: i32, nestedTransactions: usize): i64;
+export declare function __transaction_nested_setTransactionValue(transactionId: i32, nestedTransactions: usize, value: i64): void;
+export declare function __transaction_nested_createTransactionAction(transactionId: i32, nestedTransactions: usize, model: usize): i32;
+export declare function __transaction_nested_getActionContractName(transactionId: i32, nestedTransactions: usize, actionId: i32): usize;
+export declare function __transaction_nested_setActionContractName(transactionId: i32, nestedTransactions: usize, actionId: i32, name: usize): void;
+export declare function __transaction_nested_getActionContract(transactionId: i32, nestedTransactions: usize, actionId: i32): usize;
+export declare function __transaction_nested_setActionContract(transactionId: i32, nestedTransactions: usize, actionId: i32, name: usize): void;
+export declare function __transaction_nested_getRequestStringValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize): usize;
+export declare function __transaction_nested_setRequestStringValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize, value: usize): void;
+export declare function __transaction_nested_getRequestLongValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize): i64;
+export declare function __transaction_nested_setRequestLongValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize, value: i64): void;
+export declare function __transaction_nested_getRequestFloatValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize): i32;
+export declare function __transaction_nested_setRequestFloatValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize, value: i32): void;
+export declare function __transaction_nested_getRequestBooleanValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: i32, predicate: usize): i32;
+export declare function __transaction_nested_setRequestBooleanValue(transactionId: i32, nestedTransactions: usize, actionId: i32, subject: usize, predicate: usize, value: i32): void;
+export declare function __transaction_nested_createNestedTransaction(transactionId: i32, nestedTransactions: usize, encrypted: i32): usize;
+export declare function __transaction_nested_createNestedTransactionFromParent(transactionId: i32, nestedTransactions: usize, encrypted: i32, parentHash: usize): usize;
+
+
 
 // rdf methods
 export declare function __rdf_executeQuery(type: usize, query: usize) : i64;

@@ -41,13 +41,18 @@ import {__console,
     __transaction_setRequestFloatValue,
     __transaction_getRequestBooleanValue,
     __transaction_setRequestBooleanValue,
-    __transaction_submit} from "../exports/keto"
+    __transaction_submit,
+    __transaction_submitWithStatus,
+    __transaction_createNestedTransaction,
+    __transaction_createNestedTransactionFromParent} from "../exports/keto"
 import {c_str_len, c_str_to_typescript} from "../exports/utils"
 import {TransactionAction} from "./TransactionAction"
+import { ChildNestedTransaction } from "./ChildNestedTransaction";
 
 export class ChildTransaction {
     transactionId: i32;
     actions: TransactionAction[];
+    nested: ChildNestedTransaction[];
     
     constructor() {
         this.transactionId = __transaction_createTransaction()
@@ -84,11 +89,11 @@ export class ChildTransaction {
         return c_str_to_typescript(__transaction_getParent(this.transactionId));
     }
 
-    getTransactionValue(): number {
+    getTransactionValue(): i64 {
         return __transaction_getTransactionValue(this.transactionId);
     }
 
-    setTransactionValue(value: number): void {
+    setTransactionValue(value: i64): void {
         __transaction_setTransactionValue(this.transactionId,value);
     }
 
@@ -98,8 +103,25 @@ export class ChildTransaction {
         return transactionAction;
     }
 
+    createNestedTransaction(encrypted: bool) : ChildNestedTransaction {
+        let childNestedTransaction = new ChildNestedTransaction(this.transactionId,null,encrypted,null);
+        this.nested.push(childNestedTransaction);
+        return childNestedTransaction;
+    }
+
+    createNestedTransactionFromParent(encrypted: bool, parentHash: string) : ChildNestedTransaction {
+        let childNestedTransaction = new ChildNestedTransaction(this.transactionId,null,encrypted,parentHash);
+        this.nested.push(childNestedTransaction);
+        return childNestedTransaction;
+    }
+    
     submit() : void {
         __transaction_submit(this.transactionId);
+    }
+
+    submitWithStatus(status: string) : void {
+        let utf8status = String.UTF8.encode(status,true);
+        __transaction_submitWithStatus(this.transactionId,changetype<usize>(utf8status));
     }
 
 

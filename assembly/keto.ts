@@ -49,26 +49,45 @@ export namespace Keto {
     }
 
     /**
+     * This method will generate a console out on the server the contracts executes.
      * 
-     * @param msg 
+     * @param msg The string message.
      */
     export function console(msg: string): void {
         let utf8Msg = String.UTF8.encode(msg,true);
         __console(changetype<usize>(utf8Msg));
     }
+
+    /**
+     * Log to the servers console
+     * 
+     * @param level The level of the message
+     * @param msg Log to the servers console.
+     */
     export function log(level: u32, msg: string): void {
         let utf8Msg = String.UTF8.encode(msg,true);
         __log(level,changetype<usize>(utf8Msg));
     }
     
+    /**
+     * Return the reference to the contract object.
+     * 
+     * @return The contract reference.
+     */
     export function contract() : Contract {
         return new Contract();
     }
 
+    /**
+     * Returns the current transaction reference.
+     * 
+     * @return The transaction object.
+     */
     export function transaction() : Transaction {
         return new Transaction();
     }
 
+    
     export function httpRequest() : HttpRequest {
         return new HttpRequest();
     }

@@ -1,9 +1,12 @@
 {
+  "name": "avertem-typescript-sdk",
+  "version": "0.0.1",
+  "description": "Avertem Typescript SDK",
   "scripts": {
     "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate",
     "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize --noDebug",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
-    "tsdoc": "typedoc --out ./target-doc/ ./assembly/transaction/NestedTransactionAction.ts ./assembly/transaction/TransactionAction.ts ./assembly/transaction/ChildTransaction.ts ./assembly/transaction/ChildNestedTransaction.ts ./assembly/transaction/transaction.ts ./assembly/contract/Contract.ts ./assembly/keto.ts ./assembly/exports/utils.ts ./assembly/exports/keto.ts ./assembly/json/TsJSONBuilder.ts ./assembly/json/TsJSON.ts ./assembly/json/decoder.ts ./assembly/http/http_request.ts ./assembly/http/http_response.ts ./assembly/keto_env.ts ./assembly/rdf/resultset.ts"
+    "tsdoc": "typedoc --tsconfig tsconfig-typedoc.json"
   },
   "devDependencies": {
     "typedoc": "^0.20.23",

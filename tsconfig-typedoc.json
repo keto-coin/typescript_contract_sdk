@@ -1,0 +1,16 @@
+{
+  "extends": "../assemblyscript/std/assembly.json",
+  "compilerOptions": {
+      "strict": false
+  },
+  "typedocOptions": {
+    "entryPoints": ["./assembly/keto.ts"],
+    "out": "typescript_doc"
+  },
+  "exclude": [
+    "./assembly/exports/utils.ts",
+    "./assembly/memory/keto.ts",
+    "./assembly/json/decoder.ts",
+    "./assembly/json/TsJSON.ts"
+  ]
+}

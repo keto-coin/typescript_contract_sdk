@@ -1,0 +1,4 @@
+{
+  "entryPoints": ["./assembly"],
+  "out": "typescript_docs"
+}

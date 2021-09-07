@@ -11,6 +11,6 @@ export function c_str_len(value: i32) : usize {
 
 export function c_str_to_typescript(value: usize) : string {
     let result : string =  String.UTF8.decode(changetype<ArrayBuffer>(value),true);
-    __release(value)
+    //__release(value)
     return result;
 }

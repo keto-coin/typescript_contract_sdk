@@ -55,6 +55,8 @@ export class ChildNestedTransaction {
 
     constructor(transactionId: i32, nestedTransactionId: string | null = null, encrypted: bool = false, parentHash : string | null = null) {
         this.transactionId = transactionId;
+        this.actions = [];
+        this.nested = [];
         if (nestedTransactionId) {
             let utf8NestedTransactionId = String.UTF8.encode(nestedTransactionId,true);
             if (parentHash) {

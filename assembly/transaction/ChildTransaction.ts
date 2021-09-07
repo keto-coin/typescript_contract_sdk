@@ -56,6 +56,8 @@ export class ChildTransaction {
     
     constructor() {
         this.transactionId = __transaction_createTransaction()
+        this.actions = [];
+        this.nested = [];
     }
 
 
